@@ -1,0 +1,62 @@
+/**
+ * Custom responsive select boxes.
+ *
+ * Copyright 2012 HŒkan Edling @tidyui.
+ *
+ * Html should be created with the following syntax:
+ *
+ * <div class="select">
+ *   <select id="myId">
+ *     <option>Option 1</option>
+ *     <option>Option 2</option>
+ *     ...
+ *   </select>
+ * </div>     
+ */
+.select {
+    background: #fff;
+    position: relative;
+    border: solid 1px #bbb;
+    margin-bottom: 10px;
+    padding: 0;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+	}
+.select .select-val {
+    padding: 5px 10px;
+    white-space: nowrap;
+    overflow: hidden;
+	}
+.select .select-btn {
+	background: #888;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 26px;
+	height: 100%;
+	}
+.select select, .select .select-opt {
+	display: none;
+	}
+.select .select-opt {
+	background: #fff;
+	position: absolute;
+	width: 100%;
+    border: solid 1px #bbb;
+    border-top: none;
+    z-index: 1000;
+    left: -1px;
+	}
+.select .select-opt li {
+	padding: 4px 10px;
+	border-bottom: 1px solid #bbb;
+	font-weight: bold;
+	cursor: pointer;
+	}
+.select .select-opt li:last-child {
+	border: none;
+	}
+.select .select-opt li:hover {
+	background: #f2f2f2;
+	}	
