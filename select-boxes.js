@@ -30,7 +30,7 @@ $(document).ready(function () {
 			'<ul class="select-opt" data-id="' + $(e).attr('id') + '">' ;
 		
 		for (var n = 0; n < options.length; n++) {
-			html += '<li' + (n == 0 ? ' tabindex="-1"' : '') + '>' + $(options[n]).text() + '</li>' ;
+			html += '<li tabindex="-1">' + $(options[n]).text() + '</li>' ;
 		}
 		html += '</ul>' ;
 		
@@ -48,13 +48,33 @@ $(document).ready(function () {
 	/**
 	 * Add the enter event to select boxes.
 	 */
-	$('.select-val').keypress(function(evt) {
+	$('.select-val').keydown(function(evt) {
 		keycode = (evt.which) ? evt.which : event.keyCode ;
 			
 		if (keycode == 13) {
 			evt.preventDefault() ;
 			$(this).siblings('.select-opt').fadeToggle('fast') ;
-			//$(this).siblings('.select-opt').children('li:first').focus() ;
+		} else if (keycode == 40) {
+			$(this).siblings('.select-opt').children('li:first').focus() ;			
+		}
+	});
+	
+	$('.select-opt li').keydown(function(evt) {
+		keycode = (evt.which) ? evt.which : event.keyCode ;
+		var index = getIndexOfOption($(this));
+		
+		if (keycode == 40) {
+			evt.preventDefault() ;
+			if ($(this).next().get(0) != null) {
+				$(this).next().focus() ;
+			}
+		} else if (keycode == 38) {
+			evt.preventDefault() ;
+			if ($(this).prev().get(0) != null)
+				$(this).prev().focus() ;			
+		} else if (keycode == 13) {
+			evt.preventDefault() ;
+			selectOption($(this)) ;
 		}
 	});
 
@@ -62,16 +82,31 @@ $(document).ready(function () {
 	 * Add the click event to the custom select option.
 	 */
 	$('.select-opt li').click(function() {
+		selectOption($(this));
+	});
+	
+	/**
+	 * Gets the index of the given li option.
+	 */
+	function getIndexOfOption(li) {
+		return li.parent().find('li').index(this);		
+	}
+	
+	/**
+	 * Selects the given li option
+	 */
+	function selectOption(li) {
 		// Get the matching select box and the selected index.
-		var select = $('#' + $(this).parent().attr('data-id')) ;
-		var index = $(this).parent().find('li').index(this) ;
+		var select = $('#' + li.parent().attr('data-id'));
+		var index = getIndexOfOption(li);
 
 		// Select the new option in the "real" select list.
 		select.children('option').removeAttr('selected');
-		$(select.children('option').get(index)).attr('selected', 'selected') ;
+		$(select.children('option').get(index)).attr('selected', 'selected');
 		
 		// Update & close the custom select list.
-		$(this).parent().siblings('.select-val').text($(this).text()) ;
-		$(this).parent().fadeToggle('fast');
-	});
+		li.parent().siblings('.select-val').text(li.text());
+		li.parent().fadeToggle('fast');
+		li.parent().siblings('.select-val').focus();
+	}
 });
