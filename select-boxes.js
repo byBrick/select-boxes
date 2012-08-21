@@ -16,11 +16,15 @@ $(document).ready(function () {
 		// If nothing was selected, get the first option.
 		if (selected == null)
 			selected = $(children.get(0)).text() ;
+		// Get tab index
+		var tabindex = null ;
+		if ($(this).attr('tabindex') != '')
+			tabindex = $(this).attr('tabindex') ;
 					
 		// Lets build some html	
 		var html =
 			'<div class="select-btn"></div>' +
-			'<div class="select-val">' + selected  + '</div>' +
+			'<div class="select-val"' + (tabindex != null ? ' tabindex=' + tabindex : '') + '>' + selected  + '</div>' +
 			'<ul class="select-opt" data-id="' + $(e).attr('id') + '">' ;
 		
 		for (var n = 0; n < options.length; n++) {
