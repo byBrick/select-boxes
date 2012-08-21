@@ -18,9 +18,11 @@ $(document).ready(function () {
 			selected = $(children.get(0)).text() ;
 		// Get tab index
 		var tabindex = null ;
-		if ($(this).attr('tabindex') != '')
+		if ($(this).attr('tabindex') != '') {
 			tabindex = $(this).attr('tabindex') ;
-					
+			$(this).removeAttr('tabindex') ;
+		}
+		
 		// Lets build some html	
 		var html =
 			'<div class="select-btn"></div>' +
@@ -28,7 +30,7 @@ $(document).ready(function () {
 			'<ul class="select-opt" data-id="' + $(e).attr('id') + '">' ;
 		
 		for (var n = 0; n < options.length; n++) {
-			html += '<li>' + $(options[n]).text() + '</li>' ;
+			html += '<li' + (n == 0 ? ' tabindex="-1"' : '') + '>' + $(options[n]).text() + '</li>' ;
 		}
 		html += '</ul>' ;
 		
@@ -40,9 +42,22 @@ $(document).ready(function () {
 	 * Add the click event to the custom select box.
 	 */
 	$('.select-btn, .select-val').click(function() {
-		$(this).siblings('.select-opt').fadeToggle('fast');
+		$(this).siblings('.select-opt').fadeToggle('fast') ;
 	});
 	
+	/**
+	 * Add the enter event to select boxes.
+	 */
+	$('.select-val').keypress(function(evt) {
+		keycode = (evt.which) ? evt.which : event.keyCode ;
+			
+		if (keycode == 13) {
+			evt.preventDefault() ;
+			$(this).siblings('.select-opt').fadeToggle('fast') ;
+			//$(this).siblings('.select-opt').children('li:first').focus() ;
+		}
+	});
+
 	/**
 	 * Add the click event to the custom select option.
 	 */
